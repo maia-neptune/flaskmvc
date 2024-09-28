@@ -82,7 +82,12 @@ def show_course_staff(courseid):
 @app.cli.command("createCourse", help="This command creates a course, Insert the course name in quotes.")
 @click.argument("name")
 @click.argument("faculty")
-def make_course(name, faculty):
+def make_course(name, faculty): 
+
+    valid_faculties = ['FOE', 'FST', 'FSS', 'FMS', 'FHE', 'FOL', 'FFA', 'FOS']
+    if faculty not in valid_faculties:
+        print("Incorrect faculty selected. Please use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS")
+        return
 
     course = create_course(name,faculty)
     courseOnly = add_course_only(course.id) #adds to table StaffCourse with no staff
