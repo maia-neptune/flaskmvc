@@ -5,9 +5,9 @@ from App.models.teaching_assistant import *
 def create_teaching_assistant(prefix, firstName, lastName, faculty):
 
     teachingAssistant = TeachingAssistant(prefix = prefix, firstName = firstName, lastName = lastName, faculty = faculty)
+
     db.session.add(teachingAssistant)
     db.session.commit()
-
     return teachingAssistant
 
 def get_teachingAssistant(id):

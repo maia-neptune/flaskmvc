@@ -8,5 +8,5 @@ class Tutor(Staff):
  
     
     def __init__(self, prefix, firstName, lastName, faculty):
-        super().__init__(prefix, firstName, lastName, faculty)
+        super().__init__(prefix, firstName, lastName, faculty, 'Tutor')
 

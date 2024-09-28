@@ -6,3 +6,5 @@ from .initialize import *
 from .teaching_assistant import *
 from .tutor import *
 from .lecturer import *
+from .staff import *
+

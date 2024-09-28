@@ -31,3 +31,14 @@ def get_all_courses():
         return courses
     
     return None
+
+def delete_course(id):
+
+    course = get_course_by_id(id)
+
+    if course: 
+        db.session.delete(course)
+        db.session.commit()
+        return "Course removed."
+    else:
+        return None

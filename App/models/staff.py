@@ -7,13 +7,15 @@ class Staff(db.Model):
     firstName = db.Column(db.String(80), nullable = False)
     lastName = db.Column(db.String(80), nullable = False)
     faculty = db.Column(db.String(120), nullable = False)
+    job = db.Column(db.String(50), nullable = False)
 
 
-    def __init__(self, prefix, firstName, lastName, faculty):
+    def __init__(self, prefix, firstName, lastName, faculty, job):
         self.prefix = prefix
         self.firstName = firstName
         self.lastName = lastName
         self.faculty = faculty
+        self.job = job
 
 
     def get_json(self):
@@ -22,5 +24,6 @@ class Staff(db.Model):
             'prefix': self.prefix,
             'firstName': self.firstName,
             'lastName': self.lastName,
-            'faculty': self.faculty
+            'faculty': self.faculty,
+            'job': self.job
      }

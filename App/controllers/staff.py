@@ -1,13 +1,10 @@
 from App.database import db
-from App.models.staff import *
-from App.models.lecturer import *
-from App.models.tutor import *
-from App.models.teaching_assistant import *
+from App.models import Staff
 
 
-def get_all_staff():
-
-    staff = Staff.query.with_polymorphic('*').all()
+def get_all_staff(): 
+    
+    staff = Staff.query.all()
 
     if staff:
         return staff
