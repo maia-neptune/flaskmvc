@@ -1,3 +1,28 @@
+/*CLI COMMANDS: must be preceded by flask
+  assignLecturer  Assigns a lecturer to a course even if a lecturer was already assigned. Required parameters: courseID and lecturerID.
+  assignTA        Assigns a teaching assistant to a course even if a TA was already assigned. Required parameters: courseID and teachingAssistantID
+  assignTutor     Assigns a tutor to a course even if a tutor was already assigned. Required parameters: courseID and tutorID.
+  courseStaff     Shows all staff for the course code entered. Required parameters: courseID.
+  courses         Shows the list of all courses.
+  createCourse    This command creates a course, Insert the course name and faculty. Required parameters: courseName and facultyName.
+  createLecturer  Creates a lecturer. Required parameters: prefix, firstName, lastName, faculty.
+  createTA        Creates a teaching assistant. Required parameters: prefix, firstName, lastName, faculty.
+  createTutor     Creates a tutor. Required parameters: prefix, firstName, lastName, faculty.
+  db              Perform database migrations.
+  fireLecturer    Removes lecturer from the database and any course that they are assigned to. Required parameters: lecturerID.
+  fireTA          Removes teaching assistant from the database and any course that they are assigned to. Required parameters: taID.
+  fireTutor       Removes tutor from the database and any course that they are assigned to. Required parameters: tutorID.
+  init            Creates and initializes the database.
+  removeCourse    Removes a course. Required parameters: courseID.
+  removeLecturer  This command removes a lecturer from a course. Required parameters: courseID and lecturerID.
+  removeTA        This command removes a teaching assistant from a course. Required parameters: courseID and teachingAssistantID
+  removeTutor     This command removes a tutor from a course. Required parameters: courseID and tutorID.
+  routes          Show the routes for the app.
+  run             Run a development server.
+  shell           Run a shell in the app context.
+  staff           Shows all staff.
+*/
+
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/uwidcit/flaskmvc)
 <a href="https://render.com/deploy?repo=https://github.com/uwidcit/flaskmvc">
   <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
