@@ -93,7 +93,7 @@ def make_course(name, faculty):
     courseOnly = add_course_only(course.id) #adds to table StaffCourse with no staff
 
     if course and courseOnly:
-        print("Course", course.name, "created. Faculty:", course.faculty)
+        print("Course", course.name, "created. Faculty:", course.faculty, "ID: ", course.id)
 
     else:
         print('Course not created')
@@ -120,6 +120,7 @@ def creates_lecturer(prefix, firstname, lastname, faculty):
 
     if lecturer.prefix and lecturer.faculty:
         print('Lecturer created. \n','Hello, ', lecturer.prefix, lecturer.firstName, lecturer.lastName, 'The ', lecturer.faculty, ' is glad to have you.')
+        print("Your ID is: ", lecturer.id)
     else:
         print(lecturer)
 
@@ -145,6 +146,7 @@ def creates_ta(prefix, firstname, lastname, faculty):
 
     if ta:
         print('Teaching assistant created. \n','Hello, ', ta.prefix, ta.firstName, ta.lastName, 'The ', ta.faculty, ' is glad to have you.')
+        print("Your ID is: ", ta.id)
     else:
         print(ta)   
 
