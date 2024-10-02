@@ -34,15 +34,7 @@ def show_staff():
 #this command shows the list of all courses 
 @app.cli.command("courses", help="Shows the list of all courses")
 def courses_list():
-    courses = get_all_courses()
-
-    print('Course list: \n')
-    if courses:
-        for course in courses:
-            print(course.id, course.name, course.faculty)
-
-    else:
-        print('No courses available.')
+    get_all_courses()
 
 #this command shows a list of all staff in the selected course id
 @app.cli.command("courseStaff", help="Shows all staff for the course code entered")
@@ -64,12 +56,12 @@ def show_course_staff(courseid):
             print(lecturer.id, lecturer.prefix, lecturer.firstName, lecturer.lastName, lecturer.faculty, lecturer.job)
         else:
             print('No lecturer available for this course.')
-        
+
         if teachingAssistant:
             print(teachingAssistant.id, teachingAssistant.prefix, teachingAssistant.firstName, teachingAssistant.lastName, teachingAssistant.faculty, teachingAssistant.job)
         else:
             print('No teaching assistant available for this course.')
-        
+
         if tutor:
             print(tutor.id, tutor.prefix, tutor.firstName, tutor.lastName, tutor.faculty, tutor.job)
         else:
@@ -82,21 +74,10 @@ def show_course_staff(courseid):
 @app.cli.command("createCourse", help="This command creates a course, Insert the course name in quotes.")
 @click.argument("name")
 @click.argument("faculty")
-def make_course(name, faculty): 
+def make_course(name, faculty):
+    course = create_course(name, faculty)
+    staff_course.add_course_only(course) #adds to table StaffCourse with no staff
 
-    valid_faculties = ['FOE', 'FST', 'FSS', 'FMS', 'FHE', 'FOL', 'FFA', 'FOS']
-    if faculty not in valid_faculties:
-        print("Incorrect faculty selected. Please use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS")
-        return
-
-    course = create_course(name,faculty)
-    courseOnly = add_course_only(course.id) #adds to table StaffCourse with no staff
-
-    if course and courseOnly:
-        print("Course", course.name, "created. Faculty:", course.faculty, "ID: ", course.id)
-
-    else:
-        print('Course not created')
 
 # this command creates a lecturer
 @app.cli.command("createLecturer", help="Creates a lecturer. Parameters required: prefix, first name, last name, faculty")
@@ -120,7 +101,6 @@ def creates_lecturer(prefix, firstname, lastname, faculty):
 
     if lecturer.prefix and lecturer.faculty:
         print('Lecturer created. \n','Hello, ', lecturer.prefix, lecturer.firstName, lecturer.lastName, 'The ', lecturer.faculty, ' is glad to have you.')
-        print("Your ID is: ", lecturer.id)
     else:
         print(lecturer)
 
@@ -146,7 +126,6 @@ def creates_ta(prefix, firstname, lastname, faculty):
 
     if ta:
         print('Teaching assistant created. \n','Hello, ', ta.prefix, ta.firstName, ta.lastName, 'The ', ta.faculty, ' is glad to have you.')
-        print("Your ID is: ", ta.id)
     else:
         print(ta)   
 

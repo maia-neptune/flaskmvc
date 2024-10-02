@@ -1,17 +1,26 @@
 from App.models import StaffCourse, Lecturer, Tutor, TeachingAssistant, Course
 from App.database import db
 
-def add_course_only(courseID):
-    courseOnly = StaffCourse(courseID = courseID, lecturerID= None, teachingAssistantID=None, tutorID=None)
-    db.session.add(courseOnly)
-    db.session.commit()
+def add_course_only(course):
+    courseOnly = StaffCourse(courseID=course.id, lecturerID=None, teachingAssistantID=None, tutorID=None)
+    
+    if course and courseOnly:
+        print("Course", course.name, "created. Faculty:", course.faculty)
+        db.session.add(courseOnly)
+        db.session.commit()
+    else:
+        print('Course not created')
     return courseOnly
 
 
 def add_staff(courseID, lecturerID, teachingAssistantID, tutorID):
     staffCourse = StaffCourse(courseID = courseID, lecturerID = lecturerID, teachingAssistantID = teachingAssistantID, tutorID= tutorID)
+    # try:
     db.session.add(staffCourse)
     db.session.commit()
+    # except Exception as e:
+        # db.session.rollback()  # Rollback the session in case of an error
+        # print(f"An error occurred: {e}")
     return staffCourse
 
 def show_staff_in_course(courseID):
