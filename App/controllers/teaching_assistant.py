@@ -1,13 +1,17 @@
 from App.database import db
 from App.models.teaching_assistant import *
-
+from sqlalchemy.exc import IntegrityError
 
 def create_teaching_assistant(prefix, firstName, lastName, faculty):
 
     teachingAssistant = TeachingAssistant(prefix = prefix, firstName = firstName, lastName = lastName, faculty = faculty)
 
-    db.session.add(teachingAssistant)
-    db.session.commit()
+    try:
+        db.session.add(teachingAssistant)
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
+        print(e.orig)
     return teachingAssistant
 
 def get_teachingAssistant(id):

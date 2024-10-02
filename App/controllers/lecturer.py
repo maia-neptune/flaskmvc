@@ -1,22 +1,26 @@
 from App.database import db
 from App.models.lecturer import *
+from sqlalchemy.exc import IntegrityError
+
 
 def create_lecturer(prefix, firstName, lastName, faculty):
 
     lecturer = Lecturer(prefix = prefix, firstName = firstName, lastName = lastName, faculty = faculty)
-    db.session.add(lecturer)
-    db.session.commit()
-
+    try:
+        db.session.add(lecturer)
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
     return lecturer
 
 
 def get_lecturer(id):
-    
+
     lecturer = Lecturer.query.filter_by(id = id).first()
 
     if lecturer:
         return lecturer
-    
+
     return None
 
 
