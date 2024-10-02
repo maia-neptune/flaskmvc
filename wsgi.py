@@ -244,28 +244,9 @@ def assign_lecturer_command(courseid, id):
 @app.cli.command("assignTA", help="Assigns a teaching assistant to a course even if a teaching assistant was already assigned.")
 @click.argument("courseid")
 @click.argument("id")
-def assign_ta(courseid, id):
-
-    course = Course.query.filter_by(id = courseid).first()
-    ta = TeachingAssistant.query.filter_by(id = id).first()
-    taCheck = StaffCourse.query.filter_by(courseID=courseid).first()
-    taOld = TeachingAssistant.query.filter_by(id = taCheck.teachingAssistantID).first()
-
-    if ta is not None and taCheck.teachingAssistantID == ta.id:
-        print("Teaching assistant already assigned to course.")
-        return
-
-    if taOld is not None and ta:
-        add_teachingAssistant(courseid, id)
-        print(taOld.prefix, taOld.firstName, taOld.lastName, 'replaced by', ta.prefix, ta.firstName, ta.lastName)
-    if course:
-        if ta:
-            add_teachingAssistant(courseid, id)
-            print(ta.prefix, ta.firstName, ta.lastName,'now assigned to', course.name, '.')
-        else:
-            print('Teaching assistant does not exist.')
-    else:
-        print('Course does not exist.')
+def assign_ta_command(courseid, id):
+    result = assign_ta(courseid, id)
+    print(result)
 
 # this command assigns a tutor to a course
 @app.cli.command("assignTutor", help="Assigns a tutor to a course even if a tutor was already assigned.")
