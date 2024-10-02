@@ -15,12 +15,8 @@ def add_course_only(course):
 
 def add_staff(courseID, lecturerID, teachingAssistantID, tutorID):
     staffCourse = StaffCourse(courseID = courseID, lecturerID = lecturerID, teachingAssistantID = teachingAssistantID, tutorID= tutorID)
-    # try:
     db.session.add(staffCourse)
     db.session.commit()
-    # except Exception as e:
-        # db.session.rollback()  # Rollback the session in case of an error
-        # print(f"An error occurred: {e}")
     return staffCourse
 
 def show_staff_in_course(courseID):
