@@ -166,7 +166,7 @@ def assign_ta_command(courseid, id):
 @app.cli.command("assignTutor", help="Assigns a tutor to a course even if a tutor was already assigned.")
 @click.argument("courseid")
 @click.argument("id")
-def assign_tutor(courseid, id):
+def assign_tutor_command(courseid, id):
     result = assign_tutor(courseid, id)
     print(result)
 

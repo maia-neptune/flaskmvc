@@ -27,14 +27,14 @@ def fire_tutor(id):
 
 def add_tutor(courseid, tutorid):
     # Check if the relationship already exists
-    existing_assignment = StaffCourse.query.filter_by(courseID=courseid, tutorID=tutorid).first()
+    existing_assignment = StaffCourse.query.filter_by(courseID=courseid).first()
     
     if existing_assignment:
         print(f"Tutor ID {tutorid} is already assigned to Course ID {courseid}.")
         return False
 
     # Create a new StaffCourse entry
-    new_assignment = StaffCourse(courseID=courseid, tutorID=tutorid)
+    new_assignment = StaffCourse(courseID=courseid,lecturerID=None, teachingAssistantID=None ,tutorID=tutorid)
     
     # Add to the session and commit to the database
     db.session.add(new_assignment)
@@ -42,6 +42,32 @@ def add_tutor(courseid, tutorid):
     
     print(f"Tutor ID {tutorid} successfully assigned to Course ID {courseid}.")
     return True
+
+# def add_tutor(courseid, tutorid):
+#     existing_entry = StaffCourse.query.filter_by(courseID=courseid).first()
+#     if existing_entry:
+#             # Update the existing entry if necessary
+#             existing_entry.tutorID = tutorid
+#             # Optionally update other fields
+#             existing_entry.teachingAssistantID = None  # Example of updating another field
+#             # existing_entry.tutorID = None
+#     else:
+#             # Create a new entry since it doesn't exist
+#             staff_course_entry = StaffCourse(
+#             courseID=courseid,
+#             lecturerID=None,
+#             teachingAssistantID=None,  # Assuming these are optional
+#             tutorID=tutorid
+#             )
+#             db.session.add(staff_course_entry)
+
+#         # Commit the session
+#     try:
+#         db.session.commit()
+#     except Exception as e:
+#         db.session.rollback()  # Rollback in case of error
+#         raise e  # Optionally raise the error for further handling
+
 def validate_prefix(prefix):
     return prefix in ['Mrs.', 'Dr.', 'Mr.', 'Ms.', 'Prof.']
 
