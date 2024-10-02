@@ -42,6 +42,25 @@ def add_tutor(courseid, tutorid):
     
     print(f"Tutor ID {tutorid} successfully assigned to Course ID {courseid}.")
     return True
+def validate_prefix(prefix):
+    return prefix in ['Mrs.', 'Dr.', 'Mr.', 'Ms.', 'Prof.']
+
+def validate_faculty(faculty):
+    return faculty in ['FOE', 'FST', 'FSS', 'FMS', 'FHE', 'FOL', 'FFA', 'FOS']
+
+def create_and_confirm_tutor(prefix, firstName, lastName, faculty):
+    if not validate_prefix(prefix):
+        return "Invalid prefix. Use: Prof., Dr., Mrs., Mr., or Ms."
+
+    if not validate_faculty(faculty):
+        return "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
+
+    tutor = create_tutor(prefix, firstName, lastName, faculty)
+    return f'Tutor created: {tutor.prefix} {tutor.firstName} {tutor.lastName}. ID: {tutor.id}'
+
+    
+    print(f"Tutor ID {tutorid} successfully assigned to Course ID {courseid}.")
+    return True
     
 def assign_tutor(courseid, id):
     course = Course.query.filter_by(id=courseid).first()
