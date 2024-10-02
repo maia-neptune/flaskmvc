@@ -1,5 +1,5 @@
 from App.database import db
-from App.models.tutor import *
+from App.models import Tutor, Course, StaffCourse
 
 def create_tutor(prefix, firstName, lastName, faculty):
 
@@ -24,6 +24,24 @@ def fire_tutor(id):
     if tutor:
         db.session.delete(tutor)
         db.session.commit()
+
+def add_tutor(courseid, tutorid):
+    # Check if the relationship already exists
+    existing_assignment = StaffCourse.query.filter_by(courseID=courseid, tutorID=tutorid).first()
+    
+    if existing_assignment:
+        print(f"Tutor ID {tutorid} is already assigned to Course ID {courseid}.")
+        return False
+
+    # Create a new StaffCourse entry
+    new_assignment = StaffCourse(courseID=courseid, tutorID=tutorid)
+    
+    # Add to the session and commit to the database
+    db.session.add(new_assignment)
+    db.session.commit()
+    
+    print(f"Tutor ID {tutorid} successfully assigned to Course ID {courseid}.")
+    return True
     
 def assign_tutor(courseid, id):
     course = Course.query.filter_by(id=courseid).first()
