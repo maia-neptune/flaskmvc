@@ -236,29 +236,9 @@ def delete_course_one(courseid):
 @app.cli.command("assignLecturer", help="Assigns a lecturer to a course even if a lecturer was already assigned.")
 @click.argument("courseid")
 @click.argument("id")
-def assign_lecturer(courseid, id):
-
-    course = Course.query.filter_by(id = courseid).first()
-    lecturer = Lecturer.query.filter_by(id = id).first()
-    lecturerCheck = StaffCourse.query.filter_by(courseID=courseid).first()
-    lecturerOld = Lecturer.query.filter_by(id = lecturerCheck.lecturerID).first()
-
-    if lecturer is not None and lecturerCheck.lecturerID == lecturer.id:
-        print("Lecturer already assigned to course.")
-        return 
-
-    if lecturerOld is not None and lecturer:
-        add_lecturer(courseid, id)
-        print(lecturerOld.prefix, lecturerOld.firstName, lecturerOld.lastName, 'replaced by', lecturer.prefix, lecturer.firstName, lecturer.lastName)
-    if course:
-        if lecturer:
-            add_lecturer(courseid, id)
-            print(lecturer.prefix, lecturer.firstName, lecturer.lastName,'now assigned to', course.name, '.')
-        else:
-            print('Lecturer does not exist.')
-    else:
-        print('Course does not exist.')
-    
+def assign_lecturer_command(courseid, id):
+    result = assign_lecturer_to_course(courseid, id)
+    print(result)   
 
 # this command assigns a TA to a course
 @app.cli.command("assignTA", help="Assigns a teaching assistant to a course even if a teaching assistant was already assigned.")
