@@ -39,6 +39,6 @@ def create_and_confirm_tutor(prefix, firstName, lastName, faculty):
         return "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
     tutor = create_tutor(prefix, firstName, lastName, faculty)
-    return f'Tutor created: {tutor.prefix} {tutor.firstName} {tutor.lastName}.'
+    return f'Tutor created: {tutor.prefix} {tutor.firstName} {tutor.lastName}. ID: {tutor.id}'
 
     
