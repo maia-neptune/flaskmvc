@@ -1,13 +1,24 @@
 from App.database import db
 from App.models import Lecturer, Course, StaffCourse
 
-def create_lecturer(prefix, firstName, lastName, faculty):
+def create_lecturer(prefix, firstName, lastName, faculty, username, password):
+    lecturer = Lecturer(
+        prefix=prefix,
+        firstName=firstName,
+        lastName=lastName,
+        faculty=faculty,
+        username=username,
+        password=password 
+    )
 
-    lecturer = Lecturer(prefix = prefix, firstName = firstName, lastName = lastName, faculty = faculty)
     db.session.add(lecturer)
-    db.session.commit()
-
-    return lecturer
+    try:
+        db.session.commit()
+        return lecturer
+    except Exception as e:
+        db.session.rollback() 
+        print(f"Error creating lecturer: {e}")
+        return None 
 
 
 def get_lecturer(id):
@@ -86,12 +97,18 @@ def validate_faculty(faculty):
     return faculty in ['FOE', 'FST', 'FSS', 'FMS', 'FHE', 'FOL', 'FFA', 'FOS']
 
 
-def create_and_confirm_lecturer(prefix, firstName, lastName, faculty):
+def create_and_confirm_lecturer(prefix, firstName, lastName, faculty, username, password):
     if not validate_prefix(prefix):
         return "Invalid prefix. Use: Prof., Dr., Mrs., Mr., or Ms."
 
     if not validate_faculty(faculty):
         return "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
-    lecturer = create_lecturer(prefix, firstName, lastName, faculty)
+    lecturer = create_lecturer(prefix, firstName, lastName, faculty, username, password)
+
+    if lecturer is None:
+        return "Failed to create lecturer. Please check the provided information."
+
     return f'Lecturer created: {lecturer.prefix} {lecturer.firstName} {lecturer.lastName}. ID: {lecturer.id}'
+
+

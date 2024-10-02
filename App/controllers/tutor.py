@@ -1,9 +1,16 @@
 from App.database import db
 from App.models import Tutor, Course, StaffCourse
 
-def create_tutor(prefix, firstName, lastName, faculty):
+def create_tutor(prefix, firstName, lastName, faculty, username, password):
+    tutor = Tutor(
+        prefix=prefix,
+        firstName=firstName,
+        lastName=lastName,
+        faculty=faculty,
+        username=username,
+        password=password  
+    )
 
-    tutor = Tutor(prefix = prefix, firstName = firstName, lastName = lastName, faculty = faculty)
     db.session.add(tutor)
     db.session.commit()
 
@@ -74,19 +81,16 @@ def validate_prefix(prefix):
 def validate_faculty(faculty):
     return faculty in ['FOE', 'FST', 'FSS', 'FMS', 'FHE', 'FOL', 'FFA', 'FOS']
 
-def create_and_confirm_tutor(prefix, firstName, lastName, faculty):
+def create_and_confirm_tutor(prefix, firstName, lastName, faculty, username, password):
     if not validate_prefix(prefix):
         return "Invalid prefix. Use: Prof., Dr., Mrs., Mr., or Ms."
 
     if not validate_faculty(faculty):
         return "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
-    tutor = create_tutor(prefix, firstName, lastName, faculty)
+    tutor = create_tutor(prefix, firstName, lastName, faculty, username, password)
     return f'Tutor created: {tutor.prefix} {tutor.firstName} {tutor.lastName}. ID: {tutor.id}'
 
-    
-    print(f"Tutor ID {tutorid} successfully assigned to Course ID {courseid}.")
-    return True
     
 def assign_tutor(courseid, id):
     course = Course.query.filter_by(id=courseid).first()

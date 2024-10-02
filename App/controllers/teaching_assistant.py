@@ -2,9 +2,15 @@ from App.database import db
 from App.models import TeachingAssistant, Course, StaffCourse
 
 
-def create_teaching_assistant(prefix, firstName, lastName, faculty):
-
-    teachingAssistant = TeachingAssistant(prefix = prefix, firstName = firstName, lastName = lastName, faculty = faculty)
+def create_teaching_assistant(prefix, firstName, lastName, faculty, username, password):
+    teachingAssistant = TeachingAssistant(
+        prefix=prefix,
+        firstName=firstName,
+        lastName=lastName,
+        faculty=faculty,
+        username=username,
+        password=password  
+    )
 
     db.session.add(teachingAssistant)
     db.session.commit()
@@ -57,15 +63,16 @@ def validate_prefix(prefix):
 def validate_faculty(faculty):
     return faculty in ['FOE', 'FST', 'FSS', 'FMS', 'FHE', 'FOL', 'FFA', 'FOS']
 
-def create_and_confirm_ta(prefix, firstName, lastName, faculty):
+def create_and_confirm_ta(prefix, firstName, lastName, faculty, username, password):
     if not validate_prefix(prefix):
         return "Invalid prefix. Use: Prof., Dr., Mrs., Mr., or Ms."
 
     if not validate_faculty(faculty):
         return "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
-    ta = create_teaching_assistant(prefix, firstName, lastName, faculty)
+    ta = create_teaching_assistant(prefix, firstName, lastName, faculty, username, password)
     return f'Teaching Assistant created: {ta.prefix} {ta.firstName} {ta.lastName}. ID: {ta.id}'
+
 
 
     
