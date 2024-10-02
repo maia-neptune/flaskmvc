@@ -1,5 +1,5 @@
 from App.database import db
-from App.models.teaching_assistant import *
+from App.models import TeachingAssistant, Course, StaffCourse
 
 
 def create_teaching_assistant(prefix, firstName, lastName, faculty):
@@ -26,6 +26,31 @@ def fire_teaching_assistant(id):
     if teachingAssistant:
         db.session.delete(teachingAssistant)
         db.session.commit()
+
+def add_teachingAssistant(courseid, ta_id):
+    # Check if a record for the course already exists
+    staff_course_entry = StaffCourse.query.filter_by(courseID=courseid).first()
+
+    if staff_course_entry:
+        # Update the existing entry with the new teaching assistant ID
+        staff_course_entry.teachingAssistantID = ta_id
+    else:
+        # If no entry exists, create a new one
+        staff_course_entry = StaffCourse(
+            courseID=courseid,
+            teachingAssistantID=ta_id,
+            lecturerID=None,  # Assuming these fields can be set to None or some default value
+            tutorID=None
+        )
+        db.session.add(staff_course_entry)
+
+    # Commit the session
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()  # Rollback in case of error
+        raise e  # Optionally raise the error for further handling
+
     
 def assign_ta(courseid, ta_id):
     course = Course.query.filter_by(id=courseid).first()
