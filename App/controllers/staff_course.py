@@ -28,6 +28,28 @@ def show_staff_in_course(courseID):
     
     return None
 
+def print_staff_info(staff_course):
+    if staff_course:
+        lecturer =  Lecturer.query.filter_by(id = staff_course.lecturerID).first()
+        teaching_assistant = TeachingAssistant.query.filter_by(id = staff_course.teachingAssistantID).first()
+        tutor = Tutor.query.filter_by(id = staff_course.tutorID).first()
+
+        if lecturer:
+            print(f"Lecturer: {lecturer.id}, {lecturer.prefix} {lecturer.firstName} {lecturer.lastName}, Faculty: {lecturer.faculty}, Job: {lecturer.job}")
+        else:
+            print("No lecturer assigned to this course.")
+
+        if teaching_assistant:
+            print(f"Teaching Assistant: {teaching_assistant.id}, {teaching_assistant.prefix} {teaching_assistant.firstName} {teaching_assistant.lastName}, Faculty: {teaching_assistant.faculty}, Job: {teaching_assistant.job}")
+        else:
+            print("No teaching assistant assigned to this course.")
+
+        if tutor:
+            print(f"Tutor: {tutor.id}, {tutor.prefix} {tutor.firstName} {tutor.lastName}, Faculty: {tutor.faculty}, Job: {tutor.job}")
+        else:
+            print("No tutor assigned to this course.")
+    else:
+        print("No staff information available for this course.")
 
 
 def add_lecturer(courseID, id):
