@@ -1,5 +1,7 @@
 from App.database import db
-from App.models import Tutor, Course, StaffCourse
+from App.models.tutor import *
+from sqlalchemy.exc import IntegrityError
+
 
 def create_tutor(prefix, firstName, lastName, faculty, username, password):
     tutor = Tutor(

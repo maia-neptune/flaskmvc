@@ -1,4 +1,6 @@
 from App.database import db
+from App.models.lecturer import *
+from sqlalchemy.exc import IntegrityError
 from App.models import Lecturer, Course, StaffCourse
 
 def create_lecturer(prefix, firstName, lastName, faculty, username, password):
@@ -20,14 +22,13 @@ def create_lecturer(prefix, firstName, lastName, faculty, username, password):
         print(f"Error creating lecturer: {e}")
         return None 
 
-
 def get_lecturer(id):
-    
+
     lecturer = Lecturer.query.filter_by(id = id).first()
 
     if lecturer:
         return lecturer
-    
+
     return None
 
 

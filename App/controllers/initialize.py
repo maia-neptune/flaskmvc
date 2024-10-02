@@ -40,22 +40,3 @@ def initialize():
     add_staff(3, 5, 7, 15)  
     add_staff(4, 4, 10, 11)  
     add_staff(5, 1, 8, 13)  
-
-    # add_lecturer(1,2)
-    # add_lecturer(2,3)
-    # add_lecturer(3,5)
-    # add_lecturer(4,4)
-    # add_lecturer(5,1)
-    # add_teachingAssistant(1,6)
-    # add_teachingAssistant(2,9)
-    # add_teachingAssistant(3,7)
-    # add_teachingAssistant(4,10)
-    # add_teachingAssistant(5,8)
-    # add_tutor(1,12)
-    # add_tutor(2,14)
-    # add_tutor(3,15)
-    # add_tutor(4,11)
-    # add_tutor(5,13)
-
-
-

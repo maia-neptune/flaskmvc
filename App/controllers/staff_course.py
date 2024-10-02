@@ -1,13 +1,20 @@
 from App.models import StaffCourse, Lecturer, Tutor, TeachingAssistant, Course
 from App.database import db
+from sqlalchemy.exc import IntegrityError
+
 
 def add_course_only(course):
     courseOnly = StaffCourse(courseID=course.id, lecturerID=None, teachingAssistantID=None, tutorID=None)
     
     if course and courseOnly:
         print("Course", course.name, "created. Faculty:", course.faculty)
-        db.session.add(courseOnly)
-        db.session.commit()
+        try:
+            db.session.add(courseOnly)
+            db.session.commit()
+        except IntegrityError as e:
+            db.session.rollback()
+            print(e.orig)
+            return
     else:
         print('Course not created')
     return courseOnly
@@ -15,8 +22,13 @@ def add_course_only(course):
 
 def add_staff(courseID, lecturerID, teachingAssistantID, tutorID):
     staffCourse = StaffCourse(courseID = courseID, lecturerID = lecturerID, teachingAssistantID = teachingAssistantID, tutorID= tutorID)
-    db.session.add(staffCourse)
-    db.session.commit()
+
+    try:
+        db.session.add(staffCourse)
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
+        print(e.orig)
     return staffCourse
 
 def show_staff_in_course(courseID):
