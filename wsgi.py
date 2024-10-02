@@ -57,35 +57,41 @@ def make_course(name, faculty):
 
 
 # this command creates a lecturer
-@app.cli.command("createLecturer", help="Creates a lecturer. Parameters: prefix, first name, last name, faculty")
+@app.cli.command("createLecturer", help="Creates a lecturer. Parameters: prefix, first name, last name, faculty, username, password")
 @click.argument("prefix")
 @click.argument("firstname")
 @click.argument("lastname")
 @click.argument("faculty")
-def creates_lecturer(prefix, firstname, lastname, faculty):
-    result = create_and_confirm_lecturer(prefix, firstname, lastname, faculty)
+@click.argument("username")
+@click.argument("password")
+def creates_lecturer(prefix, firstname, lastname, faculty, username, password):
+    result = create_and_confirm_lecturer(prefix, firstname, lastname, faculty, username, password)
     print(result)
 
 
 #this command creates a teaching assistant
-@app.cli.command("createTA", help="Creates a teaching assistant. Parameters: prefix, first name, last name, faculty")
+@app.cli.command("createTA", help="Creates a teaching assistant. Parameters: prefix, first name, last name, faculty, username, password")
 @click.argument("prefix")
 @click.argument("firstname")
 @click.argument("lastname")
 @click.argument("faculty")
-def creates_ta(prefix, firstname, lastname, faculty):
-    result = create_and_confirm_ta(prefix, firstname, lastname, faculty)
+@click.argument("username")
+@click.argument("password")
+def creates_ta(prefix, firstname, lastname, faculty, username, password):
+    result = create_and_confirm_ta(prefix, firstname, lastname, faculty, username, password)
     print(result)
 
 
 #this command creates a tutor
-@app.cli.command("createTutor", help="Creates a tutor. Parameters: prefix, first name, last name, faculty")
+@app.cli.command("createTutor", help="Creates a tutor. Parameters: prefix, first name, last name, faculty, username, password")
 @click.argument("prefix")
 @click.argument("firstname")
 @click.argument("lastname")
 @click.argument("faculty")
-def creates_tutor(prefix, firstname, lastname, faculty):
-    result = create_and_confirm_tutor(prefix, firstname, lastname, faculty)
+@click.argument("username")
+@click.argument("password")
+def creates_tutor(prefix, firstname, lastname, faculty, username, password):
+    result = create_and_confirm_tutor(prefix, firstname, lastname, faculty, username, password)
     print(result)
 
 
