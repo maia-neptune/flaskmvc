@@ -237,7 +237,7 @@ def delete_course_one(courseid):
 @click.argument("courseid")
 @click.argument("id")
 def assign_lecturer_command(courseid, id):
-    result = assign_lecturer_to_course(courseid, id)
+    result = assign_lecturer(courseid, id)
     print(result)   
 
 # this command assigns a TA to a course
