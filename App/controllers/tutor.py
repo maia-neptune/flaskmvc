@@ -1,4 +1,6 @@
 from App.database import db
+from App.models.course import Course
+from App.models.staff_course import StaffCourse
 from App.models.tutor import *
 from sqlalchemy.exc import IntegrityError
 
