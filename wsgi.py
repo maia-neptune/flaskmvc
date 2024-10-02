@@ -253,27 +253,8 @@ def assign_ta_command(courseid, id):
 @click.argument("courseid")
 @click.argument("id")
 def assign_tutor(courseid, id):
-
-    course = Course.query.filter_by(id = courseid).first()
-    tutor = Tutor.query.filter_by(id = id).first()
-    tutorCheck = StaffCourse.query.filter_by(courseID=courseid).first()
-    tutorOld = Tutor.query.filter_by(id = tutorCheck.tutorID).first()
-
-    if tutor is not None and tutorCheck.tutorID == tutor.id:
-        print("Tutor already assigned to course.")
-        return
-
-    if tutorOld is not None and tutor:
-        add_tutor(courseid, id)
-        print(tutorOld.prefix, tutorOld.firstName, tutorOld.lastName, 'replaced by', tutor.prefix, tutor.firstName, tutor.lastName)
-    if course:
-        if tutor:
-            add_tutor(courseid, id)
-            print(tutor.prefix, tutor.firstName, tutor.lastName,'now assigned to', course.name, '.')
-        else:
-            print('Tutor does not exist.')
-    else:
-        print('Course does not exist.')
+    result = assign_tutor(courseid, id)
+    print(result)
 
 #fires lecturer
 @app.cli.command("fireLecturer", help='Removes lecturer from the database and any course that they would be teaching.')
