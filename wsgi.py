@@ -28,17 +28,11 @@ def show_staff():
 #this command shows the list of all courses 
 @app.cli.command("courses", help="Shows the list of all courses")
 def courses_list():
-    courses = get_all_courses()
-
-    print('Course list: \n')
-    if courses:
-        for course in courses:
-            print(course.id, course.name, course.faculty)
-
-    else:
-        print('No courses available.')
+    get_all_courses()
 
 #this command shows a list of all staff in the selected course id
+@app.cli.command("courseStaff", help="Shows all staff for the course code entered")
+@click.argument("courseid")
 @app.cli.command("courseStaff", help="Shows all staff for the course code entered")
 @click.argument("courseid")
 def show_course_staff(courseid):
@@ -53,26 +47,14 @@ def show_course_staff(courseid):
     print_staff_info(course_staff)
 
 
-
 #this command creates a course
 @app.cli.command("createCourse", help="This command creates a course, Insert the course name in quotes.")
 @click.argument("name")
 @click.argument("faculty")
-def make_course(name, faculty): 
+def make_course(name, faculty):
+    course = create_course(name, faculty)
+    staff_course.add_course_only(course) #adds to table StaffCourse with no staff
 
-    valid_faculties = ['FOE', 'FST', 'FSS', 'FMS', 'FHE', 'FOL', 'FFA', 'FOS']
-    if faculty not in valid_faculties:
-        print("Incorrect faculty selected. Please use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS")
-        return
-
-    course = create_course(name,faculty)
-    courseOnly = add_course_only(course.id) #adds to table StaffCourse with no staff
-
-    if course and courseOnly:
-        print("Course", course.name, "created. Faculty:", course.faculty, "ID: ", course.id)
-
-    else:
-        print('Course not created')
 
 # this command creates a lecturer
 @app.cli.command("createLecturer", help="Creates a lecturer. Parameters: prefix, first name, last name, faculty")
