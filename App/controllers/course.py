@@ -1,5 +1,6 @@
 from App.database import db
 from App.models import Course
+from sqlalchemy.exc import IntegrityError
 
 
 
@@ -10,9 +11,11 @@ def create_course(name, faculty):
         return
 
     course = Course(name=name, faculty=faculty)
-    db.session.add(course)
-    db.session.commit()
-
+    try:
+        db.session.add(course)
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
     return course
 
 
@@ -40,7 +43,7 @@ def get_all_courses():
         print('Course list: \n')
         for course in courses:
             print(course.id, course.name, course.faculty)
-        return
+        return courses
 
     else:
         print('No courses available.')    

@@ -1,11 +1,16 @@
 from App.database import db
-from App.models import Tutor, Course, StaffCourse
+from App.models.tutor import *
+from sqlalchemy.exc import IntegrityError
+
 
 def create_tutor(prefix, firstName, lastName, faculty):
 
     tutor = Tutor(prefix = prefix, firstName = firstName, lastName = lastName, faculty = faculty)
-    db.session.add(tutor)
-    db.session.commit()
+    try:
+        db.session.add(tutor)
+        db.session.commit()
+    except IntegrityError as e:
+        print(e.orig)
 
     return tutor
 
