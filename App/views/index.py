@@ -38,3 +38,8 @@ def create_lecturer_view():
     else:
         return jsonify({"error": result}), 400 
 
+
+
+
+# Admin create routes ( POST routes)
+
