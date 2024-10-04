@@ -1,10 +1,15 @@
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify
 from App.controllers import (
     create_user, initialize,
+    create_and_confirm_lecturer,
     create_and_confirm_ta,
+    create_and_confirm_tutor,
     create_course,
     get_course_by_id,
-    show_staff_in_course
+    show_staff_in_course,
+    assign_lecturer,
+    assign_ta,
+    assign_tutor
     )
 from App.controllers import *
 from flask_jwt_extended import jwt_required
@@ -140,7 +145,7 @@ def assign_lecturer_view():
 
 
 @index_views.route('/courses/<int:course_id>/staff/ta', methods=['POST'])
-def assign_ta_view():
+def assign_ta_view(course_id):
     data = request.get_json()
     ta_id = data.get('id')
     
@@ -151,7 +156,7 @@ def assign_ta_view():
     return jsonify({"message": result}), 200
 
 @index_views.route('/courses/<int:course_id>/staff/tutor', methods=['POST'])
-def assign_tutor_view():
+def assign_tutor_view(course_id):
     data = request.get_json()
     tutor_id = data.get('id')
     
