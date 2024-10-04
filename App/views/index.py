@@ -68,4 +68,23 @@ def create_teaching_assisstant_view():
         return jsonify({"error": result}), 400
 
 
+@index_views.route('/tutors', methods=['POST'])
+@jwt_required()  
+def create_tutors_view():
+    data = request.get_json()
+    prefix = data.get('prefix')
+    firstName = data.get('firstName')
+    lastName = data.get('lastName')
+    faculty = data.get('faculty')
+    username = data.get('username')
+    password = data.get('password')
+
+    result = create_and_confirm_tutor(prefix, firstName, lastName, faculty, username, password)
+
+    if "Tutor created" in result:
+        return jsonify({"message": result}), 201
+    else:
+        return jsonify({"error": result}), 400
+
+
 
