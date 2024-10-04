@@ -88,3 +88,37 @@ def create_tutors_view():
 
 
 
+@index_views.route('/courses/<int:course_id>/staff/lecturer', methods=['POST'])
+def assign_lecturer_view():
+    data = request.get_json()
+    lecturer_id = data.get('id')
+    
+    if not lecturer_id:
+        return jsonify({"message": "Missing lecturer ID."}), 400
+
+    result = assign_lecturer(course_id, lecturer_id)
+    return jsonify({"message": result}), 200
+
+
+@index_views.route('/courses/<int:course_id>/staff/ta', methods=['POST'])
+def assign_ta_view():
+    data = request.get_json()
+    ta_id = data.get('id')
+    
+    if not ta_id:
+        return jsonify({"message": "Missing TA ID."}), 400
+
+    result = assign_ta(course_id, ta_id)
+    return jsonify({"message": result}), 200
+
+@index_views.route('/courses/<int:course_id>/staff/tutor', methods=['POST'])
+def assign_tutor_view():
+    data = request.get_json()
+    tutor_id = data.get('id')
+    
+    if not tutor_id:
+        return jsonify({"message": "Missing tutor ID."}), 400
+
+    result = assign_tutor(course_id, tutor_id)
+    return jsonify({"message": result}), 200
+
