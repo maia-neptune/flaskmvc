@@ -51,7 +51,7 @@ def get_all_courses(course_id):
 # POST METHODS - add data to the database by creation of a new object
 
 #POST /courses - Create a new course
-@index_views.routes('/courses', methods=['POST'])
+@index_views.route('/courses', methods=['POST'])
 @jwt_required
 def create_course_view():
     data = request.get_json()
