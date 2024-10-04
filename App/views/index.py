@@ -1,6 +1,11 @@
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify
 from App.controllers import (
-    create_user, initialize, create_and_confirm_ta,)
+    create_user, initialize,
+    create_and_confirm_ta,
+    create_course,
+    get_course_by_id,
+    show_staff_in_course
+    )
 from App.controllers import *
 from flask_jwt_extended import jwt_required
 
@@ -23,7 +28,43 @@ def health_check():
 # GET METHODS
 
 # GET /teaching_assistant - retrieves a list of teaching assistants
-# @index_views.route('/teaching_assistants', methods=['GET'])
+# @index_views.route('/staff/<int:staff_id', methods=['GET'])
+
+@index_views.route('/get_course_staff/<int:course_id>/staff', methods=['GET'])
+@jwt_required()
+def get_all_courses(course_id):
+    courses = get_course_by_id(course_id)
+
+    if not courses:
+        return jsonify({"message": "Course not found"})
+
+    staff = show_staff_in_course(courses.id)
+
+    if not staff:
+        return jsonify({"message": "Could not find stafff for this course"})
+
+    return jsonify(staff), 200
+
+
+
+
+# POST METHODS - add data to the database by creation of a new object
+
+#POST /courses - Create a new course
+@index_views.routes('/courses', methods=['POST'])
+@jwt_required
+def create_course_view():
+    data = request.get_json()
+    name = data.get('name')
+    faculty = data.get('faculty')
+
+    course = create_course(name=name, faculty=faculty)
+
+    if "Lecturer created" in course:
+        return jsonify({"message": course}), 201
+    else:
+        return jsonify({"error": course}), 400
+
 
 
 
@@ -47,8 +88,6 @@ def create_lecturer_view():
         return jsonify({"error": result}), 400
 
 
-
-
 @index_views.route('/teaching_assistants', methods=['POST'])
 @jwt_required()  
 def create_teaching_assisstant_view():
@@ -60,9 +99,9 @@ def create_teaching_assisstant_view():
     username = data.get('username')
     password = data.get('password')
 
-    result = create_and_confirm_ta(prefix, firstName, lastName, faculty, username, password)
+    result = create_and_confirm_ta(prefix=prefix, firstName=firstName, lastName=lastName, faculty=faculty, username=username, password=password)
 
-    if "Lecturer created" in result:
+    if "Teaching assistant created" in result:
         return jsonify({"message": result}), 201
     else:
         return jsonify({"error": result}), 400
