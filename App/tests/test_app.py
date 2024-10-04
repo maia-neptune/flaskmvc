@@ -4,14 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from App.main import create_app
 from App.database import db, create_db
 from App.models import User
-from App.controllers import (
-    create_user,
-    get_all_users_json,
-    login,
-    get_user,
-    get_user_by_username,
-    update_user
-)
+from App.controllers import *
 
 
 LOGGER = logging.getLogger(__name__)
@@ -67,13 +60,65 @@ class UsersIntegrationTests(unittest.TestCase):
         assert user.username == "rick"
 
     def test_get_all_users_json(self):
+    
         users_json = get_all_users_json()
-        self.assertListEqual([{"id":1, "username":"bob"}, {"id":2, "username":"rick"}], users_json)
+        expected_json = [
+            {"id": 1, "username": "bob"},
+            {"id": 2, "prefix": "Dr.", "firstName": "John", "lastName": "Doe", "faculty": "FOE", "job": "Lecturer"},
+            {"id": 3, "username": "rick"}
+        ]
+        self.assertListEqual(expected_json, users_json)
+
 
     # Tests data changes in the database
     def test_update_user(self):
         update_user(1, "ronnie")
         user = get_user(1)
         assert user.username == "ronnie"
-        
 
+     # Integration Tests for Lecturer Creation
+    def test_create_and_confirm_lecturer(self):
+        prefix = "Dr."
+        firstname = "John"
+        lastname = "Doe"
+        faculty = "FOE"
+        username = "johndoe"
+        password = "password123"
+
+        result = create_and_confirm_lecturer(prefix, firstname, lastname, faculty, username, password)
+
+        assert "Lecturer created: Dr. John Doe" in result
+
+        lecturer = Lecturer.query.filter_by(username=username).first()
+        assert lecturer is not None
+        assert lecturer.firstName == firstname
+        assert lecturer.lastName == lastname
+        assert lecturer.faculty == faculty
+
+        
+    def test_create_lecturer_with_invalid_prefix(self):
+        prefix = "InvalidPrefix"
+        firstname = "Jane"
+        lastname = "Doe"
+        faculty = "FOE"
+        username = "janedoe"
+        password = "password123"
+
+        result = create_and_confirm_lecturer(prefix, firstname, lastname, faculty, username, password)
+
+        assert result == "Invalid prefix. Use: Prof., Dr., Mrs., Mr., or Ms."
+
+    def test_create_lecturer_with_invalid_faculty(self):
+        
+        prefix = "Dr."
+        firstname = "Jane"
+        lastname = "Doe"
+        faculty = "InvalidFaculty"
+        username = "janedoe"
+        password = "password123"
+
+        
+        result = create_and_confirm_lecturer(prefix, firstname, lastname, faculty, username, password)
+
+        
+        assert result == "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
