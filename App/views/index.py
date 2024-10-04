@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify
-from App.controllers import create_user, initialize
+from App.controllers import (
+    create_user, initialize, create_and_confirm_ta,)
 from App.controllers import *
 from flask_jwt_extended import jwt_required
 
@@ -19,6 +20,13 @@ def health_check():
     return jsonify({'status':'healthy'})
 
 
+# GET METHODS
+
+# GET /teaching_assistant - retrieves a list of teaching assistants
+# @index_views.route('/teaching_assistants', methods=['GET'])
+
+
+
 # POST /lecturers – Create a lecturer (Admin only)
 @index_views.route('/lecturers', methods=['POST'])
 @jwt_required()  
@@ -34,12 +42,30 @@ def create_lecturer_view():
     result = create_and_confirm_lecturer(prefix, firstName, lastName, faculty, username, password)
 
     if "Lecturer created" in result:
-        return jsonify({"message": result}), 201  
+        return jsonify({"message": result}), 201
     else:
-        return jsonify({"error": result}), 400 
+        return jsonify({"error": result}), 400
 
 
 
 
-# Admin create routes ( POST routes)
+@index_views.route('/teaching_assistants', methods=['POST'])
+@jwt_required()  
+def create_teaching_assisstant_view():
+    data = request.get_json()
+    prefix = data.get('prefix')
+    firstName = data.get('firstName')
+    lastName = data.get('lastName')
+    faculty = data.get('faculty')
+    username = data.get('username')
+    password = data.get('password')
+
+    result = create_and_confirm_ta(prefix, firstName, lastName, faculty, username, password)
+
+    if "Lecturer created" in result:
+        return jsonify({"message": result}), 201
+    else:
+        return jsonify({"error": result}), 400
+
+
 
