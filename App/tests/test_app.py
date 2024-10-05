@@ -130,7 +130,7 @@ class UsersIntegrationTests(unittest.TestCase):
         firstname = "John"
         lastname = "Doe"
         faculty = "FOE"
-        username = "johndoe"
+        username = "johnathondoe"
         password = "password123"
 
         result = create_and_confirm_tutor(prefix, firstname, lastname, faculty, username, password)
@@ -177,11 +177,11 @@ class UsersIntegrationTests(unittest.TestCase):
         firstname = "John"
         lastname = "Doe"
         faculty = "FOE"
-        username = "johndoe"
+        username = "johnnydoe"
         password = "password123"
 
         result = create_and_confirm_ta(prefix, firstname, lastname, faculty, username, password)
-
+        print(username)
         assert "Teaching Assistant created: Mr. John Doe" in result
 
         teaching_assistant = TeachingAssistant.query.filter_by(username=username).first()

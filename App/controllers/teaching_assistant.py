@@ -80,7 +80,6 @@ def create_and_confirm_ta(prefix, firstName, lastName, faculty, username, passwo
         return "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
     ta = create_teaching_assistant(prefix, firstName, lastName, faculty, username, password)
-    print(ta)
     return f'Teaching Assistant created: {ta.prefix} {ta.firstName} {ta.lastName}. ID: {ta.id}'
 
 
