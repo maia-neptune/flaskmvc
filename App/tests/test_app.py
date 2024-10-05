@@ -293,3 +293,22 @@ class TeachingAssistantIntegrationTests(unittest.TestCase):
 
         
         assert result == "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
+
+    def test_assign_ta(self):
+        # Create a mock course
+        course = get_course_by_id(1)
+        
+        # Create a mock teaching assistant
+        ta = create_teaching_assistant("Mr.", "John", "Doe", "TA", "testta", "testpass")      
+
+        # Assign the TA to the course
+        result = assign_ta(course.id, ta.id)
+
+        # Check if the TA's name is included in the result
+        assert "Mr. John Doe" in result
+
+        # Verify that the TA was correctly assigned in the StaffCourse table
+        staff_course = StaffCourse.query.filter_by(courseID=course.id, teachingAssistantID=ta.id).first()
+        
+        assert staff_course is not None  # Ensure the StaffCourse entry exists
+        assert staff_course.teachingAssistantID == ta.id and staff_course.courseID == course.id
