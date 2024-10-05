@@ -7,8 +7,7 @@ from sqlalchemy.exc import IntegrityError
 def create_course(name, faculty):
     valid_faculties = ['FOE', 'FST', 'FSS', 'FMS', 'FHE', 'FOL', 'FFA', 'FOS']
     if faculty not in valid_faculties:
-        print("Incorrect faculty selected. Please use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS")
-        return
+        return "Incorrect faculty selected. Please use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
     course = Course(name=name, faculty=faculty)
     try:

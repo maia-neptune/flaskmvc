@@ -76,6 +76,27 @@ class UsersIntegrationTests(unittest.TestCase):
         user = get_user(1)
         assert user.username == "ronnie"
 
+     # Integration Tests for Course Creation
+    def test_create_course(self):
+        course_name = "SoftwareEngineeringII"
+        faculty = "FST"
+
+        result = create_course(course_name, faculty)
+
+        course = Course(name=course_name, faculty=faculty)
+
+        assert course is not None
+        assert course.name == course_name
+        assert course.faculty == faculty
+
+    def test_create_course_invalid_course_faculty(self):
+        course_name = "MechanicalEngineeering101"
+        faculty = "FOZ"
+
+        result = create_course(course_name, faculty)
+
+        assert result == "Incorrect faculty selected. Please use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
+
      # Integration Tests for Lecturer Creation
     def test_create_and_confirm_lecturer(self):
         prefix = "Dr."
