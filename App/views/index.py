@@ -57,20 +57,18 @@ def get_all_courses(course_id):
 
 #POST /courses - Create a new course
 @index_views.route('/courses', methods=['POST'])
-@jwt_required
+@jwt_required()
 def create_course_view():
     data = request.get_json()
     name = data.get('name')
     faculty = data.get('faculty')
 
-    course = create_course(name=name, faculty=faculty)
+    course = create_course(name, faculty)
 
-    if "Lecturer created" in course:
+    if course is not None:
         return jsonify({"message": course}), 201
     else:
         return jsonify({"error": course}), 400
-
-
 
 
 # POST /lecturers – Create a lecturer (Admin only)
