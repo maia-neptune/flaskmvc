@@ -31,8 +31,7 @@ def courses_list():
     get_all_courses()
 
 #this command shows a list of all staff in the selected course id
-@app.cli.command("courseStaff", help="Shows all staff for the course code entered")
-@click.argument("courseid")
+
 @app.cli.command("courseStaff", help="Shows all staff for the course code entered")
 @click.argument("courseid")
 def show_course_staff(courseid):
