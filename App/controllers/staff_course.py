@@ -1,17 +1,34 @@
 from App.models import StaffCourse, Lecturer, Tutor, TeachingAssistant, Course
 from App.database import db
+from sqlalchemy.exc import IntegrityError
 
-def add_course_only(courseID):
-    courseOnly = StaffCourse(courseID = courseID, lecturerID= None, teachingAssistantID=None, tutorID=None)
-    db.session.add(courseOnly)
-    db.session.commit()
+
+def add_course_only(course):
+    courseOnly = StaffCourse(courseID=course.id, lecturerID=None, teachingAssistantID=None, tutorID=None)
+    
+    if course and courseOnly:
+        print("Course", course.name, "created. Faculty:", course.faculty)
+        try:
+            db.session.add(courseOnly)
+            db.session.commit()
+        except IntegrityError as e:
+            db.session.rollback()
+            print(e.orig)
+            return
+    else:
+        print('Course not created')
     return courseOnly
 
 
 def add_staff(courseID, lecturerID, teachingAssistantID, tutorID):
     staffCourse = StaffCourse(courseID = courseID, lecturerID = lecturerID, teachingAssistantID = teachingAssistantID, tutorID= tutorID)
-    db.session.add(staffCourse)
-    db.session.commit()
+
+    try:
+        db.session.add(staffCourse)
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
+        print(e.orig)
     return staffCourse
 
 def show_staff_in_course(courseID):
@@ -23,6 +40,28 @@ def show_staff_in_course(courseID):
     
     return None
 
+def print_staff_info(staff_course):
+    if staff_course:
+        lecturer =  Lecturer.query.filter_by(id = staff_course.lecturerID).first()
+        teaching_assistant = TeachingAssistant.query.filter_by(id = staff_course.teachingAssistantID).first()
+        tutor = Tutor.query.filter_by(id = staff_course.tutorID).first()
+
+        if lecturer:
+            print(f"Lecturer: {lecturer.id}, {lecturer.prefix} {lecturer.firstName} {lecturer.lastName}, Faculty: {lecturer.faculty}, Job: {lecturer.job}")
+        else:
+            print("No lecturer assigned to this course.")
+
+        if teaching_assistant:
+            print(f"Teaching Assistant: {teaching_assistant.id}, {teaching_assistant.prefix} {teaching_assistant.firstName} {teaching_assistant.lastName}, Faculty: {teaching_assistant.faculty}, Job: {teaching_assistant.job}")
+        else:
+            print("No teaching assistant assigned to this course.")
+
+        if tutor:
+            print(f"Tutor: {tutor.id}, {tutor.prefix} {tutor.firstName} {tutor.lastName}, Faculty: {tutor.faculty}, Job: {tutor.job}")
+        else:
+            print("No tutor assigned to this course.")
+    else:
+        print("No staff information available for this course.")
 
 
 def add_lecturer(courseID, id):
