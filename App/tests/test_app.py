@@ -35,6 +35,36 @@ class UserUnitTests(unittest.TestCase):
         user = User("bob", password)
         assert user.check_password(password)
 
+
+class StaffUnitTests(unittest.TestCase):
+    def test_get_staff_json(self):
+        staff = Staff("johnny", "johnnypassy", "Mr.", "John", "Lip", "FOE", "Tutor")
+        staff_json = staff.get_json()
+        self.assertDictEqual(staff_json, {"id":None, "prefix": "Mr.",
+                                          "firstName": "John",
+                                          "lastName": "Lip", "faculty": "FOE",
+                                          "job": "Tutor"})
+
+
+class StaffCourseUnitTests(unittest.TestCase):
+    def test_get_staff_course_json(self):
+        staff_course = StaffCourse(1, 1, 1, 1)
+        staff_course_json = staff_course.get_json()
+        self.assertDictEqual(staff_course_json, {"id": None, "courseID": 1,
+                                                 "lecturerID": 1,
+                                                 "teachingAssistantID": 1,
+                                                 "tutorID": 1})
+
+
+class CourseUnitTest(unittest.TestCase):
+    def test_get_course_json(self):
+        course = Course("MyCourse", "FST")
+        course_json = course.get_json()
+        self.assertDictEqual(course_json, {"name": "MyCourse",
+                                           "faculty": "FST"})
+
+
+
 '''
     Integration Tests
 '''
@@ -77,7 +107,9 @@ class UsersIntegrationTests(unittest.TestCase):
         user = get_user(1)
         assert user.username == "ronnie"
 
-     # Integration Tests for Course Creation
+
+# Integration Tests for Course Creation
+class CourseIntegrationTests(unittest.TestCase):
     def test_create_course(self):
         course_name = "SoftwareEngineeringII"
         faculty = "FST"
@@ -98,7 +130,9 @@ class UsersIntegrationTests(unittest.TestCase):
 
         assert result == "Incorrect faculty selected. Please use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
-     # Integration Tests for Lecturer Creation
+
+# Integration Tests for Lecturer Creation
+class LecturerIntegrationTests(unittest.TestCase):
     def test_create_and_confirm_lecturer(self):
         prefix = "Dr."
         firstname = "John"
@@ -144,9 +178,20 @@ class UsersIntegrationTests(unittest.TestCase):
 
         assert result == "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
+    def test_assign_lecturer(self):
+        course = get_course_by_id(1)
+        lecturer = create_lecturer("Mr.", "TestFirst", "TestLast", "FOE", "testname", "testpass")      
+
+        result = assign_lecturer(course.id, lecturer.id)
+        assert "Mr. TestFirst TestLast" in result
+
+        staff_course = StaffCourse.query.filter_by(courseID=course.id, lecturerID=lecturer.id).first()
+        
+        assert staff_course is not None
+        assert staff_course.lecturerID == lecturer.id and staff_course.courseID == course.id
 
     # Integration Tests for Tutor Creation
-    # !
+class TutorIntegrationTests(unittest.TestCase):
     def test_create_and_confirm_tutor(self):
         prefix = "Mr."
         firstname = "John"
@@ -165,7 +210,6 @@ class UsersIntegrationTests(unittest.TestCase):
         assert tutor.lastName == lastname
         assert tutor.faculty == faculty
 
-# !
     def test_create_tutor_with_invalid_prefix(self):
             prefix = "InvalidPrefix"
             firstname = "Jane"
@@ -192,8 +236,19 @@ class UsersIntegrationTests(unittest.TestCase):
 
         assert result == "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
-        # Integration Tests for Teaching Assisstant Creation
-        # !
+    # def test_assign_tutor(self):
+    #     course = get_course_by_id(1)
+    #     tutor = create_tutor("Mr.", "TestFirst", "TestLast", "FOE", "testname", "testpass")
+    #     result = assign_tutor(course.id, tutor.id)
+    #     assert "Mr. TestFirst TestLast now assigned to" in result
+
+    #     staff_course = StaffCourse.query.filter_by(courseID=course.id, tutor=tutor.id).first()
+    #     assert staff_course is not None
+    #     assert staff_course.tutorID == tutor.id and staff_course.courseID == course.id
+
+
+# Integration Tests for Teaching Assisstant Creation
+class TeachingAssistantIntegrationTests(unittest.TestCase):
     def test_create_and_confirm_teaching_assistant(self):
         prefix = "Mr."
         firstname = "John"
