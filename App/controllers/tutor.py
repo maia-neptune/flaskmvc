@@ -96,24 +96,65 @@ def create_and_confirm_tutor(prefix, firstName, lastName, faculty, username, pas
     return f'Tutor created: {tutor.prefix} {tutor.firstName} {tutor.lastName}. ID: {tutor.id}'
 
     
+# def assign_tutor(courseid, id):
+#     course = Course.query.filter_by(id=courseid).first()
+#     tutor = Tutor.query.filter_by(id=id).first()
+#     tutorCheck = StaffCourse.query.filter_by(courseID=courseid).first()
+#     tutorOld = Tutor.query.filter_by(id=tutorCheck.tutorID).first()
+
+#     if tutor is not None and tutorCheck.tutorID == tutor.id:
+#         return "Tutor already assigned to course."
+
+#     if tutorOld is not None and tutor:
+#         add_tutor(courseid, id)
+#         return f"{tutorOld.prefix} {tutorOld.firstName} {tutorOld.lastName} replaced by {tutor.prefix} {tutor.firstName} {tutor.lastName}"
+
+#     if course:
+#         if tutor:
+#             add_tutor(courseid, id)
+#             return f"{tutor.prefix} {tutor.firstName} {tutor.lastName} now assigned to {course.name}."
+#         else:
+#             return "Tutor does not exist."
+#     else:
+#         return "Course does not exist."
+
 def assign_tutor(courseid, id):
     course = Course.query.filter_by(id=courseid).first()
     tutor = Tutor.query.filter_by(id=id).first()
     tutorCheck = StaffCourse.query.filter_by(courseID=courseid).first()
-    tutorOld = Tutor.query.filter_by(id=tutorCheck.tutorID).first()
 
-    if tutor is not None and tutorCheck.tutorID == tutor.id:
-        return "Tutor already assigned to course."
+    if tutor is None:
+        return "Tutor does not exist."
 
-    if tutorOld is not None and tutor:
-        add_tutor(courseid, id)
+    if tutorCheck is not None:
+        tutorOld = Tutor.query.filter_by(id=tutorCheck.tutorID).first()
+        if tutorOld is not None and tutorOld.id == tutor.id:
+            return "Tutor already assigned to course."
+
+        add_tutor(courseid, id)  
         return f"{tutorOld.prefix} {tutorOld.firstName} {tutorOld.lastName} replaced by {tutor.prefix} {tutor.firstName} {tutor.lastName}"
 
     if course:
-        if tutor:
-            add_tutor(courseid, id)
-            return f"{tutor.prefix} {tutor.firstName} {tutor.lastName} now assigned to {course.name}."
-        else:
-            return "Tutor does not exist."
+        add_tutor(courseid, id)
+        return f"{tutor.prefix} {tutor.firstName} {tutor.lastName} now assigned to {course.name}."
     else:
         return "Course does not exist."
+
+def add_tutor(courseid, tutorid):
+    staff_course_entry = StaffCourse(
+        courseID=courseid,
+        lecturerID=None,  
+        teachingAssistantID=None,  
+        tutorID=tutorid
+    )
+    db.session.add(staff_course_entry)
+    db.session.commit()
+
+
+def remove_tutor_from_course(courseid, tutorid):
+    staff_course = StaffCourse.query.filter_by(courseID=courseid, tutorID=tutorid).first()
+    if staff_course:
+        db.session.delete(staff_course)
+        db.session.commit()
+
+
