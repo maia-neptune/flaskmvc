@@ -312,3 +312,24 @@ class TeachingAssistantIntegrationTests(unittest.TestCase):
         
         assert staff_course is not None  
         assert staff_course.teachingAssistantID == ta.id and staff_course.courseID == course.id
+
+class StaffCourseIntegrationTests(unittest.TestCase):
+    def test_show_staff_in_course(self):
+        course_name = "Object Oriented Programming I"
+        faculty = "FST"
+        create_course(course_name, faculty)
+        
+        lecturer = create_lecturer("Dr.", "Penny", "Less", "FST", "penny", "pennypass")
+        teaching_assistant = create_teaching_assistant("Mr.", "David", "Rules", "FST", "david", "davidpass")
+        tutor = create_tutor("Ms.", "Carol", "Taylor", "FST", "carol", "carolpass")
+
+        course = Course.query.filter_by(name=course_name).first()
+        assign_lecturer(course.id, lecturer.id)
+        assign_tutor(course.id, tutor.id)
+        assign_ta(course.id, teaching_assistant.id)
+
+        staff = show_staff_in_course(course.id)
+        assert staff is not None
+        assert staff.lecturerID == lecturer.id
+        assert staff.tutorID == tutor.id
+        assert staff.teachingAssistantID == teaching_assistant.id
