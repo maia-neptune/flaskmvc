@@ -244,15 +244,15 @@ class TutorIntegrationTests(unittest.TestCase):
 
         assert result == "Invalid faculty. Use: FOE, FST, FSS, FMS, FHE, FOL, FFA, or FOS"
 
-    # def test_assign_tutor(self):
-    #     course = get_course_by_id(1)
-    #     tutor = create_tutor("Mr.", "TestFirst", "TestLast", "FOE", "testname", "testpass")
-    #     result = assign_tutor(course.id, tutor.id)
-    #     assert "Mr. TestFirst TestLast now assigned to" in result
+    def test_assign_tutor(self):
+        course = get_course_by_id(1)
+        tutor = create_tutor("Mr.", "TestFirst", "TestLast", "FOE", "tutorname", "tutorpass")
+        result = assign_tutor(course.id, tutor.id)
+        assert "Mr. TestFirst TestLast now assigned to" in result
 
-    #     staff_course = StaffCourse.query.filter_by(courseID=course.id, tutor=tutor.id).first()
-    #     assert staff_course is not None
-    #     assert staff_course.tutorID == tutor.id and staff_course.courseID == course.id
+        staff_course = StaffCourse.query.filter_by(courseID=course.id, tutorID=tutor.id).first()
+        assert staff_course is not None
+        assert staff_course.tutorID == tutor.id and staff_course.courseID == course.id
 
 # Integration Tests for Teaching Assisstant Creation
 class TeachingAssistantIntegrationTests(unittest.TestCase):
