@@ -102,14 +102,12 @@ class UsersIntegrationTests(unittest.TestCase):
 
     def test_get_all_users_json(self):
         users_json = get_all_users_json()
-        # Update expected_json to match what get_all_users_json() returns
+
         expected_json = [
             {"id": 1, "username": "bob"},
             {"id": 2, "username": "rick"}
         ]
         assert users_json == expected_json, f"Expected {expected_json}, but got {users_json}"
-
-
 
     # Tests data changes in the database
     def test_update_user(self):
