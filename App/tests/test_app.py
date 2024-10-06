@@ -317,14 +317,21 @@ class StaffCourseIntegrationTests(unittest.TestCase):
     def test_show_staff_in_course(self):
         course = create_course("Object Oriented Programming I", "FST")
         
-        lecturer = create_lecturer("Dr.", "Penny", "Less", "FST", "penny", "pennypass")
-        teaching_assistant = create_teaching_assistant("Mr.", "David", "Rules", "FST", "david", "davidpass")
-        tutor = create_tutor("Ms.", "Carol", "Taylor", "FST", "carol", "carolpass")
+        lecturer_message = create_and_confirm_lecturer("Dr.", "Penny", "Less", "FST", "penny", "pennypass")
+        lecturer = Lecturer.query.filter_by(username="penny").first() 
 
+        teaching_assistant_message = create_and_confirm_ta("Mr.", "David", "Rules", "FST", "david", "davidpass")
+        teaching_assistant = TeachingAssistant.query.filter_by(username="david").first()  
+
+        tutor_message = create_and_confirm_tutor("Ms.", "Carol", "Taylor", "FST", "carol", "carolpass")
+        tutor = Tutor.query.filter_by(username="carol").first()  
+
+        # Assign staff to the course
         assign_lecturer(course.id, lecturer.id)
         assign_tutor(course.id, tutor.id)
         assign_ta(course.id, teaching_assistant.id)
 
+        # Retrieve staff assigned to the course
         staff = show_staff_in_course(course.id)
         
         assert staff is not None
