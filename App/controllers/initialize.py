@@ -11,6 +11,8 @@ def initialize():
     db.drop_all()
     db.create_all()
 
+    create_user("bob","bobpass")
+
     create_course('Introduction to Psychology', 'FSS')
     create_course('Introduction to C++', 'FST')
     create_course('Psychology I', 'FSS')

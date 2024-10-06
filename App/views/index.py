@@ -48,6 +48,7 @@ def get_all_courses(course_id):
     if not staff:
         return jsonify({"message": "Could not find stafff for this course"})
 
+    staff = staff.get_json()
     return jsonify(staff), 200
 
 
