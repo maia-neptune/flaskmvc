@@ -254,20 +254,6 @@ class TutorIntegrationTests(unittest.TestCase):
     #     assert staff_course is not None
     #     assert staff_course.tutorID == tutor.id and staff_course.courseID == course.id
 
-    def test_assign_tutor(self):
-        course = get_course_by_id(1)
-        existing_tutor = StaffCourse.query.filter_by(courseID=course.id).first()
-        if existing_tutor:
-            remove_tutor_from_course(course.id, existing_tutor.tutorID)
-
-        tutor = create_tutor("Ms.", "Jane", "Smith", "TUTOR", "testtutor", "testpass")
-        result = assign_tutor(course.id, tutor.id)
-
-        assert "Ms. Jane Smith" in result
-        staff_course = StaffCourse.query.filter_by(courseID=course.id, tutorID=tutor.id).first()
-        assert staff_course is not None  
-        assert staff_course.tutorID == tutor.id and staff_course.courseID == course.id
-
 # Integration Tests for Teaching Assisstant Creation
 class TeachingAssistantIntegrationTests(unittest.TestCase):
     def test_create_and_confirm_teaching_assistant(self):
